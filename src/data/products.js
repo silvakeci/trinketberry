@@ -1,0 +1,58 @@
+export const products = [
+  {
+    id: "berry-bracelet",
+    name: "Berry Bracelet",
+    price: 19.99,
+    image: "/images/trail-1.jpg",
+    description: "Minimal bracelet with a soft berry vibe.",
+  },
+  {
+    id: "moon-necklace",
+    name: "Moon Necklace",
+    price: 24.5,
+    image: "/images/trail-2.jpg",
+    description: "A delicate necklace for everyday wear.",
+  },
+  {
+    id: "pearl-rings",
+    name: "Pearl Rings",
+    price: 14.0,
+    image: "/images/trail-3.jpg",
+    description: "Simple rings with a clean pearl finish.",
+  },
+  {
+    id: "gold-earrings",
+    name: "Gold Earrings",
+    price: 29.0,
+    image: "/images/trail-4.jpg",
+    description: "Elegant earrings with a warm gold tone.",
+  },
+   {
+    id: "gold-earrings",
+    name: "Gold Earrings",
+    price: 29.0,
+    image: "/images/trail-5.jpg",
+    description: "Elegant earrings with a warm gold tone.",
+  },
+   {
+    id: "gold-earrings",
+    name: "Gold Earrings",
+    price: 29.0,
+    image: "/images/trail-6.jpg",
+    description: "Elegant earrings with a warm gold tone.",
+  },
+   {
+    id: "gold-earrings",
+    name: "Gold Earrings",
+    price: 29.0,
+    image: "/images/trail-7.jpg",
+    description: "Elegant earrings with a warm gold tone.",
+  },
+     {
+    id: "gold-earrings",
+    name: "Gold Earrings",
+    price: 29.0,
+    image: "/images/trail-8.jpg",
+    description: "Elegant earrings with a warm gold tone.",
+  },
+];
