@@ -5,73 +5,84 @@ import { supabase } from "../lib/supabase";
 import { Link, useNavigate } from "react-router-dom";
 
 function money(n) {
-  return `$${Number(n).toFixed(2)}`;
+  return `All ${Number(n || 0).toFixed(2)}`;
 }
 
 export default function Account() {
   const { user, signOut } = useAuth();
   const nav = useNavigate();
-
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
 
   const [deleting, setDeleting] = useState(false);
-  const [msg, setMsg] = useState(""); // success/error message
+  const [msg, setMsg] = useState("");
 
   useEffect(() => {
-    if (!user) {
-      nav("/auth");
-      return;
-    }
-
     async function loadOrders() {
       setLoadingOrders(true);
+
       const { data, error } = await supabase
         .from("orders")
-        .select("*")
+        .select(`
+          id,
+          created_at,
+          total,
+          status,
+          order_items (
+            id,
+            name,
+            price,
+            quantity,
+            image_url
+          )
+        `)
+        .eq("user_id", user.id)
         .order("created_at", { ascending: false });
 
-      if (!error) setOrders(data || []);
+      if (error) {
+        console.error("loadOrders error:", error);
+        setOrders([]);
+      } else {
+        setOrders(data || []);
+      }
+
       setLoadingOrders(false);
     }
 
     loadOrders();
   }, [user, nav]);
 
-const deleteAccount = async () => {
-  setMsg("");
+  const deleteAccount = async () => {
+    setMsg("");
 
-  const ok = window.confirm("Delete your account permanently?");
-  if (!ok) return;
+    const ok = window.confirm("Delete your account permanently?");
+    if (!ok) return;
 
-  setDeleting(true);
-  try {
-const { data , error} = await supabase.auth.getSession();
-    if (error) throw error;
+    setDeleting(true);
+    try {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) throw error;
 
-    const token = data?.session?.access_token;
-    if (!token) throw new Error("Session token missing. Please sign in again.");
-console.log("token length:", token?.length);
+      const token = data?.session?.access_token;
+      if (!token) throw new Error("Session token missing. Please sign in again.");
 
-    const { data: res, error: fnErr } = await supabase.functions.invoke("delete-user", {
-      headers: { Authorization: `Bearer ${token}` },
-      body: { confirm: true },
-    });
+      const { data: res, error: fnErr } = await supabase.functions.invoke("delete-user", {
+        headers: { Authorization: `Bearer ${token}` },
+        body: { confirm: true },
+      });
 
-    if (fnErr) throw fnErr;
-    if (!res?.ok) throw new Error(res?.error || "Delete failed.");
+      if (fnErr) throw fnErr;
+      if (!res?.ok) throw new Error(res?.error || "Delete failed.");
 
-    await signOut();
-    nav("/");
-  } catch (e) {
-    console.error(e);
-    setMsg(e.message || "Delete failed.");
-  } finally {
-    setDeleting(false);
-  }
-};
-
-
+      await signOut();
+      nav("/auth");
+    } catch (e) {
+      console.error(e);
+      setMsg(e.message || "Delete failed.");
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   return (
     <>
@@ -91,7 +102,11 @@ console.log("token length:", token?.length);
             </button>
           </div>
 
-          {msg && <div className="authError" style={{ marginTop: 14 }}>{msg}</div>}
+          {msg && (
+            <div className="authError" style={{ marginTop: 14 }}>
+              {msg}
+            </div>
+          )}
 
           <div className="orderDivider" />
 
@@ -105,17 +120,55 @@ console.log("token length:", token?.length);
             </p>
           ) : (
             <div className="accountOrders">
-              {orders.map((o) => (
-                <Link key={o.id} className="accountOrderCard" to={`/order/${o.id}`}>
-                  <div>
-                    <div className="accountOrderId">{o.id}</div>
-                    <div className="accountOrderDate">
-                      {new Date(o.created_at).toLocaleString()}
+              {orders.map((o) => {
+                const items = o.order_items || [];
+
+                return (
+                  <div className="orderCard" key={o.id}>
+                    <div className="orderHeader">
+                      <div>
+                        <div className="orderDate">
+                          {new Date(o.created_at).toLocaleString()}
+                        </div>
+                        <div className="orderMeta">
+                          <span className="orderTotal">{money(o.total)}</span>
+                        </div>
+                      </div>
+
+                      <div className="orderCount">
+                        {items.reduce((sum, it) => sum + Number(it.quantity || 0), 0)} items
+                      </div>
+                    </div>
+
+                    <div className="orderItemsPreview">
+                      {items.slice(0, 4).map((it) => (
+                        <div className="orderItemRow" key={it.id}>
+                          <img
+                            className="orderThumb"
+                            src={it.image_url || "/images/placeholder.jpg"}
+                            alt=""
+                          />
+
+                          <div className="orderItemInfo">
+                            <div className="orderItemName">{it.name}</div>
+                            <div className="orderItemSub">
+                              Qty {it.quantity} · {money(it.price)}
+                            </div>
+                          </div>
+
+                          <div className="orderItemLineTotal">
+                            {money(Number(it.price) * Number(it.quantity))}
+                          </div>
+                        </div>
+                      ))}
+
+                      {items.length > 4 && (
+                        <div className="orderMore">+ {items.length - 4} more…</div>
+                      )}
                     </div>
                   </div>
-                  <div className="accountOrderTotal">{money(o.total)}</div>
-                </Link>
-              ))}
+                );
+              })}
             </div>
           )}
 
@@ -123,15 +176,9 @@ console.log("token length:", token?.length);
 
           <div className="dangerZone">
             <div className="dangerTitle">Danger zone</div>
-            <div className="dangerText">
-              Deleting your account is permanent.
-            </div>
+            <div className="dangerText">Deleting your account is permanent.</div>
 
-            <button
-              className="dangerBtn"
-              onClick={deleteAccount}
-              disabled={deleting}
-            >
+            <button className="dangerBtn" onClick={deleteAccount} disabled={deleting}>
               {deleting ? "Deleting…" : "Delete my account"}
             </button>
           </div>

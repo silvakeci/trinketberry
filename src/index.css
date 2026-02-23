@@ -9,7 +9,6 @@ html, body, #root {
 }
 
 body {
-  overflow: hidden;
   background-color: #f5f3ef;
   color: #2d2a26;
 }
@@ -455,7 +454,6 @@ body::before {
 
 .cartLink{
   display:inline-block;
-  margin-top: 10px;
   text-decoration:none;
   color: rgba(45,42,38,0.9);
 }
@@ -1038,4 +1036,850 @@ body::before {
   cursor: pointer;
   font-family:"Inter",sans-serif;
   color: rgba(120,20,20,0.95);
+}
+.adminPage{
+  min-height: calc(100vh - 72px);
+  display: grid;
+  place-items: center;
+  padding-top: 92px;
+  padding-bottom: 40px;
+}
+
+.adminCard{
+  width: min(1100px, calc(100% - 68px));
+  border-radius: 22px;
+  padding: 22px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.10), 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.adminTop{
+  display:flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.adminTitle{
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  font-size: 44px;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.adminTabs{ display:flex; gap: 10px; flex-wrap: wrap; }
+
+
+.adminTextarea{
+  min-height: 90px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.70);
+  padding: 10px 12px;
+  font-family:"Inter",sans-serif;
+  resize: vertical;
+}
+
+.adminList{ margin-top: 12px; display:grid; gap: 12px; }
+
+.adminRow{
+  display:flex;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.55);
+}
+
+.adminThumb{
+  width: 68px;
+  height: 68px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.adminRowMain{ flex:1; }
+.adminRowName{ font-family:"Inter",sans-serif; font-size: 14px; color: rgba(45,42,38,0.92); }
+
+.adminRowActions{ margin-top: 10px; display:flex; gap: 10px; flex-wrap: wrap; }
+
+.adminOrdersGrid{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 980px){
+  .adminOrdersGrid{ grid-template-columns: 1fr; }
+}
+
+.adminOrdersList{
+  display:grid;
+  gap: 10px;
+  align-content:start;
+}
+
+.adminOrderItem{
+  text-align:left;
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.55);
+  cursor: pointer;
+}
+
+.adminOrderItem.active{
+  border-color: rgba(0,0,0,0.16);
+  background: rgba(255,255,255,0.70);
+}
+
+.adminOrderDetail{
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.55);
+  align-content:start;
+}
+
+.adminDetailTop{
+  display:flex;
+  justify-content: space-between;
+  align-items:flex-start;
+  gap: 12px;
+}
+
+.adminSelect{
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.75);
+  padding: 0 10px;
+  font-family:"Inter",sans-serif;
+}
+.header-right a[href="/admin"]{
+  color: rgba(120, 20, 20, 0.85);
+}
+
+.modalTop{
+  display:flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.modalImageRow{
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+@media (max-width: 760px){
+  .modalImageRow{ grid-template-columns: 1fr; }
+}
+
+.modalPreview{
+  width: 160px;
+  height: 160px;
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.modalPreview img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+
+.adminRowActions{
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.adminActionBtn{
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: rgba(45,42,38,0.85);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.adminActionBtn:hover{
+  background: rgba(255,255,255,0.9);
+  border-color: rgba(0,0,0,0.18);
+  transform: translateY(-1px);
+}
+/* Admin: upload field styled like inputs */
+.adminUploadField{
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.55);
+}
+
+.fileHidden{
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.uploadRow{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.uploadBtn{
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.70);
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: rgba(45,42,38,0.85);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.uploadBtn:hover{
+  background: rgba(255,255,255,0.92);
+  border-color: rgba(0,0,0,0.18);
+  transform: translateY(-1px);
+}
+
+.uploadBtn.disabled{
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.uploadName{
+  flex: 1;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.70);
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: rgba(45,42,38,0.65);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.adminPreviewDirection {
+  display: flex;
+}
+.adminPreview{
+  width: 100px;
+  height: 100px;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+  overflow: hidden;
+   margin-right: 10px;
+}
+
+.adminPreview img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+ 
+}
+
+.adminForm{
+  margin-top: 12px;
+  display: grid;
+  gap: 12px;
+}
+
+.adminForm .authInput,
+.adminForm .adminTextarea{
+  border-radius: 18px;
+}
+/* Better modal look */
+.modalOverlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(20,18,16,0.40);
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  z-index: 9999;
+}
+
+.modalCard{
+  width: min(900px, 100%);
+  border-radius: 26px;
+  padding: 18px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 40px 110px rgba(0,0,0,0.25), 0 12px 36px rgba(0,0,0,0.12);
+}
+
+
+.modalGrid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.modalFull{ grid-column: 1 / -1; }
+
+@media (max-width: 760px){
+  .modalGrid{ grid-template-columns: 1fr; }
+}
+
+/* Image area */
+.editMediaRow{
+  display: flex;
+  flex-direction:column-reverse;
+  gap: 14px;
+}
+
+@media (max-width: 760px){
+  .editMediaRow{ grid-template-columns: 1fr; }
+}
+.editCoverImage {
+  display: flex;
+}
+.editPreviewCard{
+  width: 100px;
+  height: 100px;
+  border-radius: 22px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(0,0,0,0.10);
+  place-items: center;
+  margin-right: 10px;
+}
+
+.editPreviewCard img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.editUploadCard{
+  border-radius: 22px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.55);
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+/* Footer actions */
+.modalActions{
+  display:flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  padding-top: 6px;
+}
+
+/* Uniform fields inside modal */
+.modalCard .authInput{
+  height: 44px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.75);
+  padding: 0 14px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: rgba(45,42,38,0.90);
+  outline: none;
+}
+
+.modalCard .adminTextarea{
+  min-height: 120px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.75);
+  padding: 10px 14px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: rgba(45,42,38,0.90);
+  outline: none;
+  resize: vertical;
+}
+
+/* Labels spacing */
+.modalCard .authLabel{
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(45,42,38,0.55);
+  margin-bottom: 6px;
+}
+
+
+.modalGrid > div{
+  min-width: 0;
+}
+.adminRow2{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 760px){
+  .adminRow2{ grid-template-columns: 1fr; }
+}
+
+.modalActionBtn{
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.70);
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: rgba(45,42,38,0.85);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.modalActionBtn:hover{
+  background: rgba(255,255,255,0.92);
+  border-color: rgba(0,0,0,0.18);
+  transform: translateY(-1px);
+}
+.modalActionBtn:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+/* ===== Shared form look (like your screenshot) ===== */
+.authInput{
+  width: 100%;
+  height: 52px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+  padding: 0 18px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: rgba(45,42,38,0.90);
+  box-sizing: border-box;
+  outline: none;
+}
+
+.authInput:focus{
+  border-color: rgba(0,0,0,0.20);
+  background: rgba(255,255,255,0.80);
+}
+
+.adminTextarea{
+  width: 100%;
+  min-height: 150px;
+  border-radius: 22px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+  padding: 14px 18px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: rgba(45,42,38,0.90);
+  box-sizing: border-box;
+  outline: none;
+  resize: vertical;
+}
+
+.adminTextarea:focus{
+  border-color: rgba(0,0,0,0.20);
+  background: rgba(255,255,255,0.80);
+}
+
+.authLabel{
+  font-size: 12px;
+  color: rgba(45,42,38,0.55);
+  margin-bottom: 8px;
+}
+.adminUploadField{
+  padding: 14px;
+  border-radius: 22px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.55);
+  display: grid;
+  gap: 10px;
+}
+
+.fileHidden{
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.uploadRow{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.uploadBtn{
+  height: 52px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: rgba(45,42,38,0.82);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.uploadBtn:hover{
+  background: rgba(255,255,255,0.82);
+  border-color: rgba(0,0,0,0.18);
+}
+
+.uploadBtn.disabled{
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.uploadName{
+  height: 52px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: rgba(45,42,38,0.60);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cartEmptyWrap{
+  min-height: calc(100vh - 180px);
+  display: grid;
+  place-items: center;
+  padding: 30px 18px;
+}
+
+.cartEmptyCard{
+  width: min(620px, 100%);
+  border-radius: 26px;
+  padding: 26px 22px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.12), 0 10px 30px rgba(0,0,0,0.06);
+  text-align: center;
+}
+
+.cartEmptyIcon{
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 10px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.75);
+  font-size: 28px;
+}
+
+.cartEmptyTitle{
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  font-size: 40px;
+  margin: 6px 0 8px;
+  color: rgba(45,42,38,0.92);
+}
+
+.cartEmptyText{
+  margin: 0 auto 18px;
+  max-width: 46ch;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(45,42,38,0.68);
+}
+
+.cartEmptyActions{
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cartEmptyBtn{
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.70);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: rgba(45,42,38,0.85);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.cartEmptyBtn:hover{
+  background: rgba(255,255,255,0.92);
+  border-color: rgba(0,0,0,0.18);
+  transform: translateY(-1px);
+}
+
+.cartEmptyBtn.primary{
+  background: rgba(45,42,38,0.92);
+  color: rgba(255,255,255,0.96);
+  border-color: rgba(45,42,38,0.92);
+}
+
+.cartEmptyBtn.primary:hover{
+  background: rgba(45,42,38,1);
+}
+.accountOrders{
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.orderCard{
+  border-radius: 22px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 18px 55px rgba(0,0,0,0.10), 0 6px 18px rgba(0,0,0,0.06);
+  padding: 16px;
+}
+
+.orderHeader{
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.orderDate{
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: rgba(45,42,38,0.75);
+}
+
+.orderMeta{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.orderStatus{
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.75);
+  font-size: 12px;
+  color: rgba(45,42,38,0.72);
+  text-transform: lowercase;
+}
+
+.orderTotal{
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: rgba(45,42,38,0.90);
+}
+
+.orderCount{
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  color: rgba(45,42,38,0.60);
+}
+
+.orderItemsPreview{
+  display: grid;
+  gap: 10px;
+}
+
+.orderItemRow{
+  display: grid;
+  grid-template-columns: 54px 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.orderThumb{
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid rgba(0,0,0,0.10);
+}
+
+.orderItemInfo{ min-width: 0; }
+
+.orderItemName{
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: rgba(45,42,38,0.92);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.orderItemSub{
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  color: rgba(45,42,38,0.60);
+  margin-top: 3px;
+}
+
+.orderItemLineTotal{
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  color: rgba(45,42,38,0.80);
+}
+
+.orderMore{
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  color: rgba(45,42,38,0.60);
+  padding-left: 66px;
+}
+
+.shopFilterBar{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 18px 0 18px;
+}
+
+.filterPill{
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: rgba(45,42,38,0.78);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filterPill:hover{
+  background: rgba(255,255,255,0.90);
+  border-color: rgba(0,0,0,0.18);
+  transform: translateY(-1px);
+}
+
+.filterPill.active{
+  background: rgba(45,42,38,0.92);
+  border-color: rgba(45,42,38,0.92);
+  color: rgba(255,255,255,0.96);
+}
+.detailThumbRow{
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.detailThumbBtn{
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.detailThumbBtn img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.detailThumbBtn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(0,0,0,0.18);
+  background: rgba(255,255,255,0.85);
+}
+
+.detailThumbBtn.active{
+  border-color: rgba(45,42,38,0.85);
+}
+
+.detailKicker{
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: rgba(45,42,38,0.55);
+  margin-bottom: 8px;
+}
+.removeImgBtn {
+  background: rgba(0, 0, 0, 0.65);
+  color: white;
+  margin-top: 2px;
+}
+.removeImgBtn:hover {
+  background: rgba(0, 0, 0, 0.85);
 }

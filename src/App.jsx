@@ -6,6 +6,7 @@ import Cart from "./pages/Cart";
 import OrderSuccess from "./pages/OrderSuccess";
 import Auth from "./pages/Auth";
 import Account from "./pages/Account";
+import Admin from "./pages/Admin";
 
 export default function App() {
   return (
@@ -17,6 +18,8 @@ export default function App() {
       <Route path="/order/:id" element={<OrderSuccess />} />
       <Route path="/auth" element={<Auth />} />
       <Route path="/account" element={<Account />} />
+      <Route path="/admin" element={<Admin />} />
+
     </Routes>
   );
 }

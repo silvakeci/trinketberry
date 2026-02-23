@@ -8,7 +8,7 @@ export async function createOrder(cartItems, total) {
 
   const { data: order, error: orderError } = await supabase
     .from("orders")
-    .insert([{ total, user_id: userId }])
+    .insert([{ total, user_id: userId, status: "pending" }])
     .select()
     .single();
 
@@ -20,6 +20,7 @@ export async function createOrder(cartItems, total) {
     name: item.name,
     price: item.price,
     quantity: item.qty,
+    image_url: item.image_url || item.image || "",
   }));
 
   const { error: itemsError } = await supabase.from("order_items").insert(items);

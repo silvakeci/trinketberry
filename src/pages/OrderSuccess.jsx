@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import { supabase } from "../lib/supabase";
 
 function money(n) {
-  return `$${Number(n).toFixed(2)}`;
+  return `All ${Number(n).toFixed(2)}`;
 }
 
 export default function OrderSuccess() {

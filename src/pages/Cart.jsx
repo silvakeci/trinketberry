@@ -5,16 +5,23 @@ import { useCart } from "../context/CartContext";
 import { createOrder } from "../lib/createOrder";
 
 function money(n) {
-  return `$${Number(n).toFixed(2)}`;
+  return `All ${Number(n).toFixed(2)}`;
 }
 
 export default function Cart() {
-  const { items, subtotal, increment, decrement, setQty, removeItem, clearCart } =
-    useCart();
+  const {
+    items,
+    subtotal,
+    increment,
+    decrement,
+    setQty,
+    removeItem,
+    clearCart,
+  } = useCart();
 
   const [checkingOut, setCheckingOut] = useState(false);
   const [message, setMessage] = useState(null);
-
+console.log('items',items)
   const onCheckout = async () => {
     if (items.length === 0) return;
 
@@ -42,10 +49,12 @@ export default function Cart() {
 
       <main className="page cartPage">
         <div className="cartTop">
-          <h2 className="page-title">Cart</h2>
-
           {items.length > 0 && (
-            <button className="cartClear" onClick={clearCart} disabled={checkingOut}>
+            <button
+              className="cartClear"
+              onClick={clearCart}
+              disabled={checkingOut}
+            >
               Clear cart
             </button>
           )}
@@ -71,11 +80,27 @@ export default function Cart() {
         )}
 
         {items.length === 0 ? (
-          <div className="cartEmpty">
-            <p>Your cart is empty.</p>
-            <Link className="cartLink" to="/shop">
-              Go to shop →
-            </Link>
+          <div className="cartEmptyWrap">
+            <div className="cartEmptyCard">
+              <div className="cartEmptyIcon" aria-hidden="true">
+                🛍️
+              </div>
+
+              <h2 className="cartEmptyTitle">Your cart is empty</h2>
+              <p className="cartEmptyText">
+                Looks like you haven’t added anything yet. Let’s find something
+                you love.
+              </p>
+
+              <div className="cartEmptyActions">
+                <Link className="cartEmptyBtn primary" to="/shop">
+                  Browse products
+                </Link>
+                <Link className="cartEmptyBtn" to="/">
+                  Back to home
+                </Link>
+              </div>
+            </div>
           </div>
         ) : (
           <div className="cartLayout">
@@ -123,7 +148,9 @@ export default function Cart() {
                     </div>
                   </div>
 
-                  <div className="cartLineTotal">{money(it.price * it.qty)}</div>
+                  <div className="cartLineTotal">
+                    {money(it.price * it.qty)}
+                  </div>
                 </div>
               ))}
             </div>

@@ -9,6 +9,10 @@ const images = [
   "/images/trail-2.jpg",
   "/images/trail-3.jpg",
   "/images/trail-4.jpg",
+  "/images/trail-5.jpg",
+  "/images/trail-6.jpg",
+  "/images/trail-7.jpg",
+  "/images/trail-8.jpg",
 ];
 
 export default function Home() {
@@ -22,11 +26,15 @@ export default function Home() {
   // Load products from Supabase
   useEffect(() => {
     async function loadProducts() {
-      const { data, error } = await supabase
+       const { data, error } = await supabase
         .from("products")
-        .select("*")
+        .select(
+          `
+    *,
+    product_images ( image_url, sort_order )
+  `,
+        )
         .order("created_at", { ascending: false });
-
       if (!error) setProducts(data);
       setLoading(false);
     }
@@ -103,7 +111,7 @@ export default function Home() {
                   id: p.id,
                   name: p.name,
                   price: Number(p.price),
-                  image: p.image_url,
+                  image: p.product_images,
                   description: p.description,
                 }}
               />

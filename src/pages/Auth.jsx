@@ -32,11 +32,11 @@ export default function Auth() {
           setPassword("");
         } else {
           // if confirmations are OFF, user is signed in immediately
-          nav("/account");
+          nav("/");
         }
       } else {
         await signIn(email, password);
-        nav("/account");
+        nav("/");
       }
     } catch (e2) {
       setErr(e2.message || "Auth failed");
