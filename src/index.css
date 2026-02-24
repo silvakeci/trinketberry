@@ -274,7 +274,7 @@ body::before {
 }
 .home-products {
   min-height: 100vh;
-  padding: 110px 34px 60px;
+  padding: 34px 60px;
 }
 
 /* =========================
@@ -1882,4 +1882,152 @@ body::before {
 }
 .removeImgBtn:hover {
   background: rgba(0, 0, 0, 0.85);
+}
+.card-img-wrapper {
+  position: relative;
+}
+
+.card-img-disabled {
+  filter: grayscale(20%);
+  opacity:1;
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.card-disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.9;
+}
+.card-add-btn {
+  margin-top: 10px;
+  padding: 8px;
+  width: 100%;
+  border: none;
+  background: black;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: 0.2s ease;
+}
+
+.card-add-btn:hover {
+  background: #222;
+}
+
+.card-add-btn.disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+.card-img-disabled {
+  filter: grayscale(100%);
+  opacity: 0.6;
+}
+.card-img-wrapper {
+  position: relative;
+}
+
+/* show only on hover */
+.card-hover-controls {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  opacity: 0;
+  transform: translateY(6px);
+  transition: 0.18s ease;
+  pointer-events: none;
+}
+
+.card.card-hover:hover .card-hover-controls {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* qty selector */
+.qty {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 6px;
+}
+
+.qty-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.qty-num {
+  min-width: 22px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* small cart icon button */
+.cart-fab {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  cursor: pointer;
+  font-size: 18px;
+  display: grid;
+  place-items: center;
+  transition: transform 0.12s ease;
+}
+
+.cart-fab:hover {
+  transform: translateY(-1px);
+}
+
+/* animate when added */
+.cart-fab.added {
+  animation: pop 0.38s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+/* default hidden state */
+.grid .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 500ms ease, transform 500ms ease;
+  will-change: opacity, transform;
+}
+
+/* when section is visible */
+.grid.grid-show .reveal {
+  opacity: 1;
+  transform: translateY(0);
 }

@@ -62,6 +62,7 @@ export default function Admin() {
     price: "",
     description: "",
     image_url: "",
+    is_available: true, // ✅ NEW
     _fileName: "",
   });
 
@@ -76,6 +77,7 @@ export default function Admin() {
     price: "",
     description: "",
     product_images: [],
+    is_available: true, // ✅ NEW
     _fileName: "",
   });
   const [editUploading, setEditUploading] = useState(false);
@@ -175,6 +177,7 @@ export default function Admin() {
       description: prodForm.description?.trim() || "",
       // main image for thumbnail/backwards compatibility
       image_url: (newImages?.[0] || prodForm.image_url || "").trim(),
+      is_available: !!prodForm.is_available, // ✅ NEW
     };
 
     if (!payload.name) return alert("Name is required.");
@@ -212,6 +215,7 @@ export default function Admin() {
         price: "",
         description: "",
         image_url: "",
+        is_available: true, // ✅ NEW
         _fileName: "",
       });
 
@@ -234,6 +238,7 @@ export default function Admin() {
       description: p.description ?? "",
       // keep objects from DB or [] if none
       product_images: p.product_images ?? [],
+      is_available: p.is_available ?? true, // ✅ NEW
       _fileName: "",
     });
   };
@@ -283,6 +288,7 @@ export default function Admin() {
       price: Number(editForm.price),
       description: editForm.description?.trim() || "",
       image_url: urls[0] || "",
+      is_available: !!editForm.is_available, // ✅ NEW
     };
 
     if (!payload.name) return alert("Name is required.");
@@ -355,10 +361,7 @@ export default function Admin() {
     }
   };
 
-  const selectedTotal = useMemo(
-    () => money(selectedOrder?.total ?? 0),
-    [selectedOrder]
-  );
+  const selectedTotal = useMemo(() => money(selectedOrder?.total ?? 0), [selectedOrder]);
 
   // ----- UI -----
   if (checking) {
@@ -417,9 +420,7 @@ export default function Admin() {
                   <select
                     className="authInput"
                     value={prodForm.category || "earrings"}
-                    onChange={(e) =>
-                      setProdForm((p) => ({ ...p, category: e.target.value }))
-                    }
+                    onChange={(e) => setProdForm((p) => ({ ...p, category: e.target.value }))}
                   >
                     <option value="earrings">Earrings</option>
                     <option value="necklaces">Necklaces</option>
@@ -433,9 +434,7 @@ export default function Admin() {
                   className="authInput"
                   placeholder="Name"
                   value={prodForm.name}
-                  onChange={(e) =>
-                    setProdForm((p) => ({ ...p, name: e.target.value }))
-                  }
+                  onChange={(e) => setProdForm((p) => ({ ...p, name: e.target.value }))}
                   required
                 />
 
@@ -443,20 +442,31 @@ export default function Admin() {
                   className="authInput"
                   placeholder="Price (e.g. 19.99)"
                   value={prodForm.price}
-                  onChange={(e) =>
-                    setProdForm((p) => ({ ...p, price: e.target.value }))
-                  }
+                  onChange={(e) => setProdForm((p) => ({ ...p, price: e.target.value }))}
                   required
                   inputMode="decimal"
                 />
+
+                {/* ✅ NEW: Availability */}
+                <div>
+                  <div className="authLabel">Availability</div>
+                  <select
+                    className="authInput"
+                    value={prodForm.is_available ? "yes" : "no"}
+                    onChange={(e) =>
+                      setProdForm((p) => ({ ...p, is_available: e.target.value === "yes" }))
+                    }
+                  >
+                    <option value="yes">Available</option>
+                    <option value="no">Not available</option>
+                  </select>
+                </div>
 
                 <textarea
                   className="adminTextarea"
                   placeholder="Description"
                   value={prodForm.description}
-                  onChange={(e) =>
-                    setProdForm((p) => ({ ...p, description: e.target.value }))
-                  }
+                  onChange={(e) => setProdForm((p) => ({ ...p, description: e.target.value }))}
                 />
 
                 {/* Upload field */}
@@ -472,24 +482,17 @@ export default function Admin() {
                       disabled={uploadingNew}
                     />
 
-                    <label
-                      className={`uploadBtn ${uploadingNew ? "disabled" : ""}`}
-                      htmlFor="newProductImage"
-                    >
+                    <label className={`uploadBtn ${uploadingNew ? "disabled" : ""}`} htmlFor="newProductImage">
                       {uploadingNew ? "Uploading…" : "Choose image"}
                     </label>
 
                     <div className="uploadName">
-                      {newImages?.length
-                        ? `${newImages.length} image(s) selected ✅`
-                        : "No file selected"}
+                      {newImages?.length ? `${newImages.length} image(s) selected ✅` : "No file selected"}
                     </div>
                   </div>
 
                   <div className="orderMutedSmall">
-                    {newImages?.length
-                      ? "Uploaded ✅ Ready to save."
-                      : "Upload JPG/PNG images."}
+                    {newImages?.length ? "Uploaded ✅ Ready to save." : "Upload JPG/PNG images."}
                   </div>
 
                   <div className="adminPreviewDirection">
@@ -516,7 +519,13 @@ export default function Admin() {
                     <img className="adminThumb" src={p.image_url} alt="" />
 
                     <div className="adminRowMain">
-                      <div className="adminRowName">{p.name}</div>
+                      <div className="adminRowName">
+                        {p.name}{" "}
+                        <span style={{ fontSize: 12, marginLeft: 8 }}>
+                          {p.is_available ? "✅ Available" : "⛔ Not available"}
+                        </span>
+                      </div>
+
                       <div className="orderMutedSmall">{money(p.price)}</div>
 
                       <div className="adminRowActions">
@@ -524,10 +533,7 @@ export default function Admin() {
                           Edit
                         </button>
 
-                        <button
-                          className="adminActionBtn"
-                          onClick={() => deleteProduct(p.id)}
-                        >
+                        <button className="adminActionBtn" onClick={() => deleteProduct(p.id)}>
                           Delete
                         </button>
 
@@ -549,9 +555,7 @@ export default function Admin() {
                   {orders.map((o) => (
                     <button
                       key={o.id}
-                      className={`adminOrderItem ${
-                        selectedOrder?.id === o.id ? "active" : ""
-                      }`}
+                      className={`adminOrderItem ${selectedOrder?.id === o.id ? "active" : ""}`}
                       onClick={async () => {
                         setSelectedOrder(o);
                         await loadOrderItems(o.id);
@@ -559,8 +563,7 @@ export default function Admin() {
                     >
                       <div className="accountOrderId">{o.id}</div>
                       <div className="orderMutedSmall">
-                        {new Date(o.created_at).toLocaleString()} · {money(o.total)} ·{" "}
-                        <strong>{o.status}</strong>
+                        {new Date(o.created_at).toLocaleString()} · {money(o.total)} · <strong>{o.status}</strong>
                       </div>
                     </button>
                   ))}
@@ -580,9 +583,7 @@ export default function Admin() {
                         <select
                           className="adminSelect"
                           value={selectedOrder.status}
-                          onChange={(e) =>
-                            updateOrderStatus(selectedOrder.id, e.target.value)
-                          }
+                          onChange={(e) => updateOrderStatus(selectedOrder.id, e.target.value)}
                         >
                           <option value="pending">pending</option>
                           <option value="paid">paid</option>
@@ -602,9 +603,7 @@ export default function Admin() {
                               Qty {it.quantity} · {money(it.price)}
                             </div>
                           </div>
-                          <div className="orderRowRight">
-                            {money(Number(it.price) * Number(it.quantity))}
-                          </div>
+                          <div className="orderRowRight">{money(Number(it.price) * Number(it.quantity))}</div>
                         </div>
                       ))}
 
@@ -645,9 +644,7 @@ export default function Admin() {
                     <select
                       className="authInput"
                       value={editForm.category}
-                      onChange={(e) =>
-                        setEditForm((p) => ({ ...p, category: e.target.value }))
-                      }
+                      onChange={(e) => setEditForm((p) => ({ ...p, category: e.target.value }))}
                     >
                       <option value="earrings">Earrings</option>
                       <option value="necklaces">Necklaces</option>
@@ -662,9 +659,7 @@ export default function Admin() {
                     <input
                       className="authInput"
                       value={editForm.name}
-                      onChange={(e) =>
-                        setEditForm((p) => ({ ...p, name: e.target.value }))
-                      }
+                      onChange={(e) => setEditForm((p) => ({ ...p, name: e.target.value }))}
                     />
                   </div>
 
@@ -673,11 +668,24 @@ export default function Admin() {
                     <input
                       className="authInput"
                       value={editForm.price}
-                      onChange={(e) =>
-                        setEditForm((p) => ({ ...p, price: e.target.value }))
-                      }
+                      onChange={(e) => setEditForm((p) => ({ ...p, price: e.target.value }))}
                       inputMode="decimal"
                     />
+                  </div>
+
+                  {/* ✅ NEW: Availability */}
+                  <div>
+                    <div className="authLabel">Availability</div>
+                    <select
+                      className="authInput"
+                      value={editForm.is_available ? "yes" : "no"}
+                      onChange={(e) =>
+                        setEditForm((p) => ({ ...p, is_available: e.target.value === "yes" }))
+                      }
+                    >
+                      <option value="yes">Available</option>
+                      <option value="no">Not available</option>
+                    </select>
                   </div>
                 </div>
 
@@ -686,9 +694,7 @@ export default function Admin() {
                   <textarea
                     className="adminTextarea"
                     value={editForm.description}
-                    onChange={(e) =>
-                      setEditForm((p) => ({ ...p, description: e.target.value }))
-                    }
+                    onChange={(e) => setEditForm((p) => ({ ...p, description: e.target.value }))}
                   />
                 </div>
 
@@ -700,11 +706,7 @@ export default function Admin() {
                     <div className="editCoverImage">
                       {normalizeImageUrls(editForm.product_images).length ? (
                         normalizeImageUrls(editForm.product_images).map((url) => (
-                          <div
-                            className="editPreviewCard"
-                            key={url}
-                            style={{ position: "relative" }}
-                          >
+                          <div className="editPreviewCard" key={url} style={{ position: "relative" }}>
                             <img src={url} alt="" />
 
                             <button
@@ -751,10 +753,7 @@ export default function Admin() {
                       />
 
                       <div className="uploadRow">
-                        <label
-                          className={`uploadBtn ${editUploading ? "disabled" : ""}`}
-                          htmlFor="editProductImage"
-                        >
+                        <label className={`uploadBtn ${editUploading ? "disabled" : ""}`} htmlFor="editProductImage">
                           {editUploading ? "Uploading…" : "Choose image"}
                         </label>
 

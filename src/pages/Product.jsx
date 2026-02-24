@@ -14,11 +14,13 @@ export default function Product() {
   const [activeImg, setActiveImg] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const [qty, setQty] = useState(1); // ✅ NEW: quantity
   const [added, setAdded] = useState(false);
   const toastTimer = useRef(null);
   const [showToast, setShowToast] = useState(false);
-console.log('product',product)
-  // ✅ Fetch product + images
+
+  console.log("product", product);
+
   useEffect(() => {
     let alive = true;
 
@@ -83,7 +85,7 @@ console.log('product',product)
     return `ALL ${Number(product.price || 0).toFixed(2)}`;
   }, [product]);
 
-  // ✅ Add to cart (use active image)
+  // ✅ Add to cart (use active image + qty)
   const onAdd = () => {
     if (!product) return;
 
@@ -92,10 +94,10 @@ console.log('product',product)
         id: product.id,
         name: product.name,
         price: Number(product.price),
-        image_url: activeImg || images[0] || product.image_url || "", // ✅ keep image_url
+        image_url: activeImg || images[0] || product.image_url || "",
         category: product.category || "",
       },
-      1
+      qty // ✅ NEW
     );
 
     setAdded(true);
@@ -146,7 +148,11 @@ console.log('product',product)
           {/* ✅ MEDIA / GALLERY */}
           <div className="detailMedia">
             <div className="detailImageCard">
-              <img className="detailImg" src={activeImg || "/images/placeholder.jpg"} alt={product.name} />
+              <img
+                className="detailImg"
+                src={activeImg || "/images/placeholder.jpg"}
+                alt={product.name}
+              />
             </div>
 
             {/* thumbnails */}
@@ -169,9 +175,7 @@ console.log('product',product)
 
           {/* INFO */}
           <div className="detailInfo">
-            <div className="detailKicker">
-              {(product.category || "").toUpperCase()}
-            </div>
+            <div className="detailKicker">{(product.category || "").toUpperCase()}</div>
 
             <h1 className="detailTitle">{product.name}</h1>
             <div className="detailPrice">{priceText}</div>
@@ -179,9 +183,32 @@ console.log('product',product)
             {product.description && <p className="detailDesc">{product.description}</p>}
 
             <div className="detailActions">
+              {/* ✅ NEW: Quantity selector */}
+              <div className="qty detailQty">
+                <button
+                  type="button"
+                  className="qty-btn"
+                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                  aria-label="Decrease quantity"
+                >
+                  −
+                </button>
+
+                <div className="qty-num">{qty}</div>
+
+                <button
+                  type="button"
+                  className="qty-btn"
+                  onClick={() => setQty((q) => Math.min(99, q + 1))}
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
+
               <button className={`detailBtn ${added ? "added" : ""}`} onClick={onAdd}>
                 <span className="btnInner">
-                  {added ? "Added" : "Add to cart"}
+                  {added ? "Added" : `Add to cart (${qty})`}
                   {added && <span className="check">✓</span>}
                 </span>
               </button>

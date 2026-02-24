@@ -6,7 +6,7 @@ import { supabase } from "../lib/supabase";
 export default function Shop() {
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState("all");
-
+console.log('proooo', products)
   useEffect(() => {
     async function loadProducts() {
       const { data, error } = await supabase
@@ -84,6 +84,8 @@ export default function Shop() {
                 price: Number(p.price),
                 image: p.product_images,
                 description: p.description,
+                available: p.is_available
+
               }}
             />
           ))}

@@ -16,67 +16,56 @@ const images = [
 ];
 
 export default function Home() {
-  const heroRef = useRef(null);
   const productsRef = useRef(null);
-  const locked = useRef(false);
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Load products from Supabase
+  // ✅ NEW: controls when animation starts
+  const [showProducts, setShowProducts] = useState(false);
+
   useEffect(() => {
     async function loadProducts() {
-       const { data, error } = await supabase
+      const { data, error } = await supabase
         .from("products")
         .select(
           `
-    *,
-    product_images ( image_url, sort_order )
-  `,
+            *,
+            product_images ( image_url, sort_order )
+          `
         )
         .order("created_at", { ascending: false });
-      if (!error) setProducts(data);
+
+      if (!error) setProducts(data || []);
       setLoading(false);
     }
 
     loadProducts();
   }, []);
 
-  // Scroll snap logic (hero <-> products)
+  // ✅ NEW: Observe when section is visible
   useEffect(() => {
-    const onWheel = (e) => {
-      if (locked.current) return;
+    const el = productsRef.current;
+    if (!el) return;
 
-      const heroEl = heroRef.current;
-      const productsEl = productsRef.current;
-      if (!heroEl || !productsEl) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShowProducts(true);
+          obs.disconnect(); // animate once
+        }
+      },
+      { threshold: 0.15 }
+    );
 
-      const y = window.scrollY;
-      const atHero = y < 10;
-      const productsTop = productsEl.getBoundingClientRect().top;
-      const atProductsTop = Math.abs(productsTop) < 10;
-
-      if (atHero && e.deltaY > 20) {
-        locked.current = true;
-        productsEl.scrollIntoView({ behavior: "smooth" });
-        setTimeout(() => (locked.current = false), 900);
-      }
-
-      if (atProductsTop && e.deltaY < -20) {
-        locked.current = true;
-        heroEl.scrollIntoView({ behavior: "smooth" });
-        setTimeout(() => (locked.current = false), 900);
-      }
-    };
-
-    window.addEventListener("wheel", onWheel, { passive: true });
-    return () => window.removeEventListener("wheel", onWheel);
+    obs.observe(el);
+    return () => obs.disconnect();
   }, []);
 
   return (
     <div>
       {/* HERO */}
-      <div ref={heroRef}>
+      <div>
         <CursorImageTrail
           images={images}
           imageSize={200}
@@ -103,18 +92,24 @@ export default function Home() {
         {loading ? (
           <p style={{ opacity: 0.6 }}>Loading products...</p>
         ) : (
-          <div className="grid">
-            {products.map((p) => (
-              <ProductCard
+          <div className={`grid ${showProducts ? "grid-show" : ""}`}>
+            {products.map((p, idx) => (
+              <div
                 key={p.id}
-                product={{
-                  id: p.id,
-                  name: p.name,
-                  price: Number(p.price),
-                  image: p.product_images,
-                  description: p.description,
-                }}
-              />
+                className="reveal"
+                style={{ transitionDelay: `${idx * 70}ms` }} // ✅ stagger
+              >
+                <ProductCard
+                  product={{
+                    id: p.id,
+                    name: p.name,
+                    price: Number(p.price),
+                    image: p.product_images,
+                    description: p.description,
+                    available: p.is_available,
+                  }}
+                />
+              </div>
             ))}
           </div>
         )}
