@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import { useCart } from "../context/CartContext";
@@ -21,15 +21,56 @@ export default function Cart() {
 
   const [checkingOut, setCheckingOut] = useState(false);
   const [message, setMessage] = useState(null);
-console.log('items',items)
+
+  // ✅ Customer fields
+  const [customer, setCustomer] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    address: "",
+  });
+
+  const updateCustomer = (key, value) => {
+    setCustomer((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const validation = useMemo(() => {
+    const errors = {};
+
+    if (!customer.firstName.trim()) errors.firstName = "First name is required";
+    if (!customer.lastName.trim()) errors.lastName = "Last name is required";
+    if (!customer.address.trim()) errors.address = "Address is required";
+
+    const phone = customer.phone.trim();
+    if (!phone) errors.phone = "Phone number is required";
+    // simple phone check (you can adjust)
+    else if (!/^[0-9+\s()-]{6,20}$/.test(phone)) errors.phone = "Invalid phone";
+
+    return {
+      ok: Object.keys(errors).length === 0,
+      errors,
+    };
+  }, [customer]);
+
   const onCheckout = async () => {
     if (items.length === 0) return;
+
+    // ✅ Block checkout if customer data missing
+    if (!validation.ok) {
+      setMessage({
+        type: "err",
+        text: "Please fill in your customer details before checkout.",
+      });
+      return;
+    }
 
     setCheckingOut(true);
     setMessage(null);
 
     try {
-      const order = await createOrder(items, subtotal);
+      // ✅ Pass customer info into order creation
+      const order = await createOrder(items, subtotal, customer);
+
       clearCart();
       window.location.href = `/order/${order.id}`;
     } catch (e) {
@@ -60,7 +101,6 @@ console.log('items',items)
           )}
         </div>
 
-        {/* Message box */}
         {message && (
           <div
             style={{
@@ -148,15 +188,86 @@ console.log('items',items)
                     </div>
                   </div>
 
-                  <div className="cartLineTotal">
-                    {money(it.price * it.qty)}
-                  </div>
+                  <div className="cartLineTotal">{money(it.price * it.qty)}</div>
                 </div>
               ))}
             </div>
 
             <aside className="cartSummary">
               <div className="summaryCard">
+                {/* ✅ Customer details form */}
+                <div style={{ marginBottom: 14 }}>
+                  <div style={{ fontWeight: 700, marginBottom: 10 }}>
+                    Customer details
+                  </div>
+
+                  <div style={{ display: "grid", gap: 10 }}>
+                    <div>
+                      <input
+                        className="qtyInput"
+                        style={{ width: "100%" }}
+                        placeholder="First name"
+                        value={customer.firstName}
+                        onChange={(e) => updateCustomer("firstName", e.target.value)}
+                        disabled={checkingOut}
+                      />
+                      {validation.errors.firstName && (
+                        <div style={{ fontSize: 12, opacity: 0.8 }}>
+                          {validation.errors.firstName}
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <input
+                        className="qtyInput"
+                        style={{ width: "100%" }}
+                        placeholder="Last name"
+                        value={customer.lastName}
+                        onChange={(e) => updateCustomer("lastName", e.target.value)}
+                        disabled={checkingOut}
+                      />
+                      {validation.errors.lastName && (
+                        <div style={{ fontSize: 12, opacity: 0.8 }}>
+                          {validation.errors.lastName}
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <input
+                        className="qtyInput"
+                        style={{ width: "100%" }}
+                        placeholder="Phone number"
+                        value={customer.phone}
+                        onChange={(e) => updateCustomer("phone", e.target.value)}
+                        disabled={checkingOut}
+                      />
+                      {validation.errors.phone && (
+                        <div style={{ fontSize: 12, opacity: 0.8 }}>
+                          {validation.errors.phone}
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <input
+                        className="qtyInput"
+                        style={{ width: "100%" }}
+                        placeholder="Address"
+                        value={customer.address}
+                        onChange={(e) => updateCustomer("address", e.target.value)}
+                        disabled={checkingOut}
+                      />
+                      {validation.errors.address && (
+                        <div style={{ fontSize: 12, opacity: 0.8 }}>
+                          {validation.errors.address}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
                 <div className="summaryRow">
                   <span>Subtotal</span>
                   <span>{money(subtotal)}</span>
@@ -175,7 +286,8 @@ console.log('items',items)
                 <button
                   className="checkoutBtn"
                   onClick={onCheckout}
-                  disabled={checkingOut}
+                  disabled={checkingOut || !validation.ok}
+                  title={!validation.ok ? "Fill customer details to checkout" : ""}
                 >
                   {checkingOut ? "Processing..." : "Checkout"}
                 </button>
