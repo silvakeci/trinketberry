@@ -161,7 +161,7 @@ body::before {
   color: rgba(45, 42, 38, 0.9);
 }
 .page {
-  padding: 34px 40px;
+  padding: 34px 0px;
 }
 
 .page-title {
@@ -171,19 +171,22 @@ body::before {
   font-size: 12px;
   color: rgba(45,42,38,0.7);
   margin-bottom: 18px;
+  padding: 10px 20px;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
+    padding: 10px 20px;
 }
 
 @media (max-width: 1100px) {
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr));   padding: 10px 20px;}
 }
 @media (max-width: 640px) {
-  .grid { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: 1fr;   padding: 10px 20px;}
+
 }
 
 .card {
@@ -278,17 +281,26 @@ body::before {
   min-height: 90vh;
 }
 
+/* App / Mobile Size */
+@media (max-width: 768px) {
+  .home-products {
+    padding: 16px 20px;   /* Smaller padding for mobile */
+    min-height: auto;     /* Prevent excessive vertical space */
+  }
+}
+
+
 /* =========================
    PRODUCT DETAIL PAGE
    ========================= */
 
 .detailPage {
-  padding-top: 92px; /* header space */
+  padding: 10px 20px; /* header space */
 }
 
 .detailBack {
   display: inline-block;
-  margin-bottom: 14px;
+  margin-bottom: 7px;
   font-family: "Inter", sans-serif;
   font-size: 12px;
   letter-spacing: 0.08em;
@@ -427,7 +439,7 @@ body::before {
 /* =========================
    CART PAGE
    ========================= */
-.cartPage { padding-top: 92px; }
+.cartPage { padding: 12px 20px; }
 
 .cartTop{
   display:flex;
@@ -720,7 +732,7 @@ body::before {
 }
 
 .orderCard {
-  width: min(720px, calc(100% - 68px));
+  width: min(720px, calc(100% - 0px));
   border-radius: 22px;
   padding: 22px;
 
@@ -968,6 +980,12 @@ body::before {
   padding-top: 92px;
   padding-bottom: 40px;
 }
+@media (max-width: 768px) {
+  .accountCenter {
+    padding-top: 16px ;   /* Smaller padding for mobile */
+    min-height: auto;     /* Prevent excessive vertical space */
+  }
+}
 
 .accountCard{
   width: min(820px, calc(100% - 68px));
@@ -1045,7 +1063,12 @@ body::before {
   padding-top: 92px;
   padding-bottom: 40px;
 }
-
+@media (max-width: 768px) {
+  .adminPage{
+    padding-top: 16px ;   /* Smaller padding for mobile */
+    min-height: auto;     /* Prevent excessive vertical space */
+  }
+}
 .adminCard{
   width: min(1100px, calc(100% - 68px));
   border-radius: 22px;
@@ -1807,6 +1830,7 @@ body::before {
   gap: 10px;
   flex-wrap: wrap;
   margin: 18px 0 18px;
+  padding: 0px 20px;
 }
 
 .filterPill{
